@@ -40,7 +40,7 @@ public class OrderMapRepo implements OrderRepo {
     public void updateOrderStatus(String id, OrderStatus status) {
         Order existingOrder = orders.get(id);
         if (existingOrder != null) {
-            Order updatedOrder = new Order(existingOrder.id(), existingOrder.products(), status);
+            Order updatedOrder = new Order(existingOrder.id(), existingOrder.products(), status, existingOrder.timestamp());
             orders.put(id, updatedOrder);
         }
     }

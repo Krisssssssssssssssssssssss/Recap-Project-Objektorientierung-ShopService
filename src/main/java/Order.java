@@ -1,13 +1,24 @@
 import lombok.With;
 
+import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
-
 
 public record Order(
         String id,
         List<Product> products,
         @With
-        OrderStatus status
+        OrderStatus status,
+        Instant timestamp
 ) {
+
+        public Order(String id, List<Product> products, OrderStatus status) {
+                this(id, products, status, Instant.now());
+        }
+
+        public Order(String id, List<Product> products, OrderStatus status, Instant timestamp) {
+                this.id = id;
+                this.products = products;
+                this.status = status;
+                this.timestamp = timestamp;
+        }
 }

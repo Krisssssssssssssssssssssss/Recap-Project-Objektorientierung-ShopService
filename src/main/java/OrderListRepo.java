@@ -1,7 +1,10 @@
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@ToString
 public class OrderListRepo implements OrderRepo{
     private List<Order> orders = new ArrayList<>();
 
@@ -45,7 +48,7 @@ public class OrderListRepo implements OrderRepo{
                 .filter(order -> order.id().equals(id))
                 .findFirst()
                 .ifPresent(order -> {
-                    Order updatedOrder = new Order(order.id(), order.products(), status);
+                    Order updatedOrder = new Order(order.id(), order.products(), status, order.timestamp());
                     int index = orders.indexOf(order);
                     orders.set(index, updatedOrder);
                 });
