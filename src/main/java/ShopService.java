@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ShopService {
@@ -7,18 +8,31 @@ public class ShopService {
     private OrderRepo orderRepo = new OrderMapRepo();
 
     public Order addOrder(List<String> productIds) {
-        List<Product> products = new ArrayList<>();
+        List<Optional<Product>> products = new ArrayList<>();
         for (String productId : productIds) {
-            Product productToOrder = productRepo.getProductById(productId);
-            if (productToOrder == null) {
-                System.out.println("Product with the ID: " + productId + " cannot be ordered!");
-                return null;
+            Optional<Product> productToOrder = productRepo.getProductById(productId);
+            try {
+            products.add(productToOrder);}
+            catch (Exception e) {
+                System.out.println("Product with the ID: " + productId + " cannot be ordered! Error message: " + e.getMessage());
             }
-            products.add(productToOrder);
         }
 
         Order newOrder = new Order(UUID.randomUUID().toString(), products, OrderStatus.PROCESSING);
 
         return orderRepo.addOrder(newOrder);
+    }
+    public void updateOrder(String orderId, OrderStatus newStatus) {
+        orderRepo.getOrders().stream().filter(o -> o.id().equals(orderId)).findFirst().ifPresent(o -> {
+            orderRepo.addOrder(o.withStatus(newStatus));
+        });
+    }
+
+    public List<Order> getOrdersWithCertainStatus(OrderStatus orderStatus) {
+        List<Order> orders = new ArrayList<>();
+        orders.stream().filter(order -> order.status().equals(orderStatus)).forEach(order -> {
+            orders.add(order);
+        });
+        return orders;
     }
 }
