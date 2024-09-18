@@ -8,13 +8,14 @@ public class ShopService {
     private OrderRepo orderRepo = new OrderMapRepo();
 
     public Order addOrder(List<String> productIds) {
-        List<Optional<Product>> products = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
         for (String productId : productIds) {
-            Optional<Product> productToOrder = productRepo.getProductById(productId);
             try {
+            Product productToOrder = productRepo.getProductById(productId).get();
             products.add(productToOrder);}
             catch (Exception e) {
                 System.out.println("Product with the ID: " + productId + " cannot be ordered! Error message: " + e.getMessage());
+                return null;
             }
         }
 
