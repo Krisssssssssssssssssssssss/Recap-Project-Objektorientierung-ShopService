@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class OrderListRepo implements OrderRepo{
     private List<Order> orders = new ArrayList<>();
@@ -33,12 +34,9 @@ public class OrderListRepo implements OrderRepo{
 
     @Override
     public OrderStatus getOrderStatus(String id) {
-        for (Order order : orders) {
-            if (order.id().equals(id)) {
-                return order.status();
-            }
-        }
-        return null;
+        Optional<Order> result = orders.stream().filter(order -> order.id().equals(id)).findFirst();
+        return result.get().status();
+
     }
 
     @Override
