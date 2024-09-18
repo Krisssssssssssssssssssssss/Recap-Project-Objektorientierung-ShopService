@@ -13,7 +13,7 @@ public class FileReader {
                 List<String> productIds = Arrays.asList(tokens).subList(2, tokens.length);
                 Order newOrder = shopService.addOrder(productIds);
                 if (newOrder != null) {
-                    aliasToOrderIdMap.put(alias, newOrder.id()); // Map the alias to the actual order ID
+                    aliasToOrderIdMap.put(alias, newOrder.id());
                     System.out.println("Order added with alias: " + alias + ", ID: " + newOrder.id());
                 } else {
                     System.out.println("Failed to add order with alias: " + alias);
@@ -22,8 +22,8 @@ public class FileReader {
 
             case "setStatus":
                 alias = tokens[1];
-                OrderStatus newStatus = OrderStatus.valueOf(tokens[2].toUpperCase()); // Convert string to enum
-                String orderId = aliasToOrderIdMap.get(alias); // Find the order ID using the alias
+                OrderStatus newStatus = OrderStatus.valueOf(tokens[2].toUpperCase());
+                String orderId = aliasToOrderIdMap.get(alias);
                 if (orderId != null) {
                     shopService.updateOrder(orderId, newStatus);
                     System.out.println("Updated status of order with alias: " + alias + " to " + newStatus);
